@@ -1,0 +1,2 @@
+S2I_SOURCE_DATA_DIR=./
+S2I_TARGET_DATA_DIR=/deployments
