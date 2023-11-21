@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+# we put a sleep here to ensure that there's at least a one second difference
+# between the ctime of the app source (copied in by s2i) and any artefacts
+# created by the build/assemble.
+echo appsrc-provided s2i assemble script executed
+sleep 1
+echo delegating to builder image s2i assemble
+
+exec /usr/local/s2i/assemble "$@"
