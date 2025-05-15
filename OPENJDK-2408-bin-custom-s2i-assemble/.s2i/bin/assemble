@@ -8,4 +8,8 @@ echo appsrc-provided s2i assemble script executed
 sleep 1
 echo delegating to builder image s2i assemble
 
-exec /usr/local/s2i/assemble "$@"
+# Adjusting the path ensures that this can find assemble for images which
+# put the s2i scripts at /usr/local/s2i (UBI8, UBI9) as well as those at
+# /usr/libexec/s2i (UBI10).
+PATH=/usr/libexec/s2i:/usr/local/s2i:$PATH
+exec assemble "$@"
