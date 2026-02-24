@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+# Define the override function before sourcing the main assemble script
+function maven_init_var_MAVEN_SETTINGS_XML_overrides() {
+  echo "Using custom MAVEN_SETTINGS_XML override"
+  MAVEN_SETTINGS_XML="/tmp/src/custom-settings.xml"
+  export MAVEN_SETTINGS_XML
+}
+
+# Export the function so it's available when the main assemble script calls it
+export -f maven_init_var_MAVEN_SETTINGS_XML_overrides
+
+echo "Issue #629 test: custom s2i assemble script with maven_init_var_MAVEN_SETTINGS_XML_overrides"
+
+# Adjusting the path ensures that this can find assemble for images which
+# put the s2i scripts at /usr/local/s2i (UBI8, UBI9) as well as those at
+# /usr/libexec/s2i (UBI10).
+PATH=/usr/libexec/s2i:/usr/local/s2i:$PATH
+exec assemble "$@"
